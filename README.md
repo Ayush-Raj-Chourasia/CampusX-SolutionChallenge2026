@@ -271,22 +271,54 @@ npm run test:e2e
 
 ## 🌐 Deployment
 
-### Frontend (Vercel)
+Both frontend and backend are deployed to **Google Cloud Run** via Cloud Build CI/CD.
+
+### Automated Deployment (Cloud Build)
+
+Push to `main` branch and Cloud Build automatically:
+1. Builds backend from `backend/Dockerfile`
+2. Builds frontend from root `Dockerfile` (serves via Node.js with `serve`)
+3. Pushes both images to Artifact Registry (asia-south1)
+4. Deploys both services to Cloud Run (asia-south1 region)
+
+**Services:**
+- **Backend API**: `campusx-backend` Cloud Run service → `VITE_API_URL` env var
+- **Frontend Web**: `campusx-frontend` Cloud Run service → publicly accessible
+
+**Build config:** [cloudbuild.yaml](cloudbuild.yaml) — defines all steps.
+
+### Manual Cloud Run Deployment (if needed)
 
 ```bash
-# Install Vercel CLI
-npm i -g vercel
+# Build backend
+gcloud builds submit --tag asia-south1-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/campusx-solutionchallenge2026/campusx-backend:latest \
+  --project=$PROJECT_ID \
+  -f backend/Dockerfile \
+  backend/
 
-# Deploy
-vercel --prod
+# Deploy backend
+gcloud run deploy campusx-backend \
+  --image asia-south1-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/campusx-solutionchallenge2026/campusx-backend:latest \
+  --platform managed \
+  --region asia-south1 \
+  --project=$PROJECT_ID
+
+# Build frontend
+gcloud builds submit --tag asia-south1-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/campusx-solutionchallenge2026/campusx-frontend:latest \
+  --project=$PROJECT_ID \
+  -f Dockerfile \
+  .
+
+# Deploy frontend
+gcloud run deploy campusx-frontend \
+  --image asia-south1-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/campusx-solutionchallenge2026/campusx-frontend:latest \
+  --platform managed \
+  --region asia-south1 \
+  --allow-unauthenticated \
+  --project=$PROJECT_ID
 ```
 
-### Backend (Railway)
-
-1. Push to GitHub
-2. Connect Railway to GitHub repo
-3. Add environment variables
-4. Deploy automatically on push
+Replace `$PROJECT_ID` with `innate-benefit-444822-h1`.
 
 ---
 
