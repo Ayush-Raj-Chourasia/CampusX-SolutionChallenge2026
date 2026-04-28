@@ -7,8 +7,8 @@ RUN npm ci
 
 COPY . .
 
-# Set default backend API URL - can be overridden at build time
-ARG VITE_API_URL=https://campusx-backend-asia-south1.run.app
+# Pass empty VITE_API_URL - will be set at runtime via Cloud Run environment variable
+ARG VITE_API_URL=
 ENV VITE_API_URL=$VITE_API_URL
 
 RUN npm run build
@@ -23,10 +23,14 @@ RUN npm install -g serve
 # Copy built files from builder
 COPY --from=builder /app/dist /app/dist
 
+# Copy entrypoint script
+COPY entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
+
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
   CMD node -e "require('http').get('http://localhost:3000', (r) => {if (r.statusCode !== 200) throw new Error(r.statusCode)})"
 
 EXPOSE 3000
 
-CMD ["serve", "-s", "dist", "-l", "3000"]
+ENTRYPOINT ["/app/entrypoint.sh"]
