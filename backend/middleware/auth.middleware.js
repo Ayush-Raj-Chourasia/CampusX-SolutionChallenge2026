@@ -33,7 +33,7 @@ const protect = async (req, res, next) => {
       });
     }
 
-    if (!req.user.isActive) {
+    if (req.user.isActive === false) {
       return res.status(401).json({
         success: false,
         error: 'Account has been deactivated'

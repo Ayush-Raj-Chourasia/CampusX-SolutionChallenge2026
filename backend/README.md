@@ -59,7 +59,7 @@ Server will run on: http://localhost:5000
 - [ ] Get single listing
 - [ ] Update listing
 - [ ] Delete listing
-- [ ] Image upload with Cloudinary
+- [ ] Image upload with Google Cloud Storage
 
 **Files to create:**
 - `routes/listing.routes.js`

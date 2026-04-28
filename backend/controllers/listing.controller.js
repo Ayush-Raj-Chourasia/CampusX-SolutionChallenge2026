@@ -1,5 +1,6 @@
 const Listing = require('../models/Listing');
 const User = require('../models/User');
+const { normalizeImages } = require('../config/storage');
 
 // @desc    Get all listings (filtered by user's college)
 // @route   GET /api/listings
@@ -199,6 +200,8 @@ const createListing = async (req, res) => {
       });
     }
 
+    const storedImages = await normalizeImages(images || []);
+
     // Create listing
     const listing = await Listing.create({
       seller: req.user.id,
@@ -208,7 +211,7 @@ const createListing = async (req, res) => {
       originalPrice: parseFloat(originalPrice),
       condition,
       category,
-      images: images || [],
+      images: storedImages,
       location: location || {},
       tags: tags || [],
       status: 'active'
@@ -283,11 +286,15 @@ const updateListing = async (req, res) => {
       'condition', 'category', 'images', 'location', 'tags', 'status'
     ];
 
-    updateFields.forEach(field => {
+    for (const field of updateFields) {
       if (req.body[field] !== undefined) {
-        listing[field] = req.body[field];
+        if (field === 'images') {
+          listing[field] = await normalizeImages(req.body[field] || []);
+        } else {
+          listing[field] = req.body[field];
+        }
       }
-    });
+    }
 
     await listing.save();
     await listing.populate('seller', 'name email college verified trustScore');

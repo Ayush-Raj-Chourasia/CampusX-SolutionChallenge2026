@@ -94,12 +94,11 @@ app.use(morgan('dev')); // Logging
 
 // Health check route
 app.get('/api/health', (req, res) => {
-  const mongoose = require('mongoose');
   res.json({
     status: 'OK',
     message: 'CampusX API is running',
     timestamp: new Date().toISOString(),
-    database: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
+    database: 'firestore',
     environment: process.env.NODE_ENV || 'development',
     version: deploymentMarker.version,
     deployed: deploymentMarker.deployedAt

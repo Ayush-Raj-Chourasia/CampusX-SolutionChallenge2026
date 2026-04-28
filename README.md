@@ -39,7 +39,7 @@
 - **Mongoose** - ODM
 - **JWT** - Authentication
 - **Socket.io** - Real-time chat
-- **Cloudinary** - Image storage
+- **Google Cloud Storage** - Image storage
 - **Razorpay** - Payment gateway
 
 ### AI Services
@@ -179,10 +179,8 @@ MONGODB_URI=mongodb://localhost:27017/campusx
 JWT_SECRET=your-super-secret-jwt-key-change-this
 JWT_EXPIRE=30d
 
-# Cloudinary (Image Storage)
-CLOUDINARY_CLOUD_NAME=your-cloud-name
-CLOUDINARY_API_KEY=your-api-key
-CLOUDINARY_API_SECRET=your-api-secret
+# Google Cloud Storage (Image Storage)
+GCS_BUCKET_NAME=your-gcs-bucket-name
 
 # Email (Nodemailer)
 EMAIL_HOST=smtp.gmail.com

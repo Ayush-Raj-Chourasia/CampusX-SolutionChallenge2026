@@ -139,6 +139,7 @@ const register = async (req, res) => {
       year: year || '1st Year', // Default to 1st Year if not provided
       department: department || '',
       phone: phone || '',
+      isActive: true,
       verified: isTestAccount ? true : false, // Test account auto-verified
       trustScore: isTestAccount ? 100 : 50 // Test account gets max trust
     });
