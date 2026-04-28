@@ -40,7 +40,7 @@ import { toast } from "sonner";
 import { socket } from "@/lib/socket";
 
 const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1MB
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 interface Message {
   _id: string;
@@ -114,7 +114,7 @@ const Chat = () => {
       const token = sessionStorage.getItem('authToken');
       if (token) {
         try {
-          const res = await fetch(`${API_URL}/auth/profile`, {
+          const res = await fetch(`${API_URL}/api/auth/profile`, {
             headers: { Authorization: `Bearer ${token}` }
           });
           const data = await res.json();

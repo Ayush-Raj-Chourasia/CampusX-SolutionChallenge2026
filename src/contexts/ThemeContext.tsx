@@ -27,8 +27,8 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       if (token) {
         try {
           // Fetch current user profile to get saved theme
-          const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-          const response = await fetch(`${API_URL}/auth/profile`, {
+          const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+          const response = await fetch(`${API_URL}/api/auth/profile`, {
             headers: {
               'Authorization': `Bearer ${token}`
             }
@@ -64,8 +64,8 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       const token = sessionStorage.getItem('authToken');
       if (token) {
         try {
-          const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-          await fetch(`${API_URL}/auth/profile`, {
+          const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+          await fetch(`${API_URL}/api/auth/profile`, {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
