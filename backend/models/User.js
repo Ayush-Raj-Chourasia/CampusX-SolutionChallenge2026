@@ -7,8 +7,14 @@ const User = createFirestoreModel({
   relationPopulators: {},
   hooks: {
     beforeSave: async (document) => {
+      // Avoid double-hashing if the password is already a bcrypt hash
+      const isAlreadyHashed = document.password && 
+                             typeof document.password === 'string' && 
+                             document.password.startsWith('$2') && 
+                             document.password.length === 60;
+
       if (!document._originalPassword || document.password !== document._originalPassword) {
-        if (document.password) {
+        if (document.password && !isAlreadyHashed) {
           document.password = await bcrypt.hash(document.password, 10);
         }
       }
