@@ -109,9 +109,9 @@ app.use('/api/auth', require('./routes/auth.routes'));
 app.use('/api/admin', require('./routes/admin.routes'));
 app.use('/api/listings', require('./routes/listing.routes'));
 app.use('/api/chat', require('./routes/chat.routes')); // Changed from /api/chats to /api/chat
+app.use('/api/ai', require('./routes/ai.routes'));
 // app.use('/api/escrow', require('./routes/escrow.routes'));
 // app.use('/api/users', require('./routes/user.routes'));
-// app.use('/api/ai', require('./routes/ai.routes'));
 
 // Error handling middleware
 app.use((err, req, res, next) => {

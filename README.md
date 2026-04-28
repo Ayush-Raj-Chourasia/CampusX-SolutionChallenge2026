@@ -43,8 +43,8 @@
 - **Razorpay** - Payment gateway
 
 ### AI Services
-- **OpenAI GPT-4** - AI Negotiator & Price Intelligence
-- **GPT-4 Vision** - College ID Verification
+- **Gemini / Vertex AI** - AI Negotiator & Price Intelligence
+- **Gemini Vision / Vertex AI** - College ID Verification
 - Custom fraud detection algorithms
 
 ---
@@ -54,7 +54,7 @@
 ### Prerequisites
 - Node.js 18+ and npm
 - MongoDB (local or Atlas)
-- OpenAI API Key
+- Google Cloud / Vertex AI access or API key
 - Cloudinary account
 - Razorpay test account
 
@@ -195,7 +195,8 @@ RAZORPAY_KEY_ID=rzp_test_xxxxxxxxxxxxx
 RAZORPAY_KEY_SECRET=your-razorpay-secret
 
 # AI Services
-OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxxxxxxxxxx
+GOOGLE_API_KEY=your-google-api-key
+GOOGLE_AI_MODEL=gemini-1.5-flash
 ```
 
 ---
