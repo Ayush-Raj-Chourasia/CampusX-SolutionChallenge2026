@@ -280,11 +280,11 @@ Push to `main` branch and Cloud Build automatically:
 2. Pushes the backend image to Artifact Registry
 3. Deploys the backend to Cloud Run in `asia-south1`
 4. Builds the frontend with the production API URL
-5. Deploys the frontend to Firebase Hosting site `campusx-frontend`
+5. Deploys the frontend to Firebase Hosting site `campusx`
 
 **Live URLs:**
 - **Backend API**: `https://campusx-backend-j3sgtmeamq-el.a.run.app`
-- **Frontend Web**: `https://campusx-frontend.web.app`
+- **Frontend Web**: `https://campusx.web.app`
 
 **Build config:** [cloudbuild.yaml](cloudbuild.yaml) — defines all steps.
 
@@ -295,7 +295,7 @@ Push to `main` branch and Cloud Build automatically:
 npm run build
 
 # Deploy to Firebase Hosting
-firebase deploy --only hosting:campusx-frontend --project innate-benefit-444822-h1
+firebase deploy --only hosting:campusx --project innate-benefit-444822-h1
 ```
 
 ### Manual Backend Deployment

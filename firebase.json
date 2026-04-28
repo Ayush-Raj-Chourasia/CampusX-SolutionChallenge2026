@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "site": "campusx-frontend",
+    "site": "campusx",
     "public": "dist",
     "ignore": [
       "firebase.json",
