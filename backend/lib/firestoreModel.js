@@ -228,6 +228,14 @@ function createFirestoreModel({ collectionName, relationPopulators, hooks = {} }
       delete output._model;
       delete output._id;
       delete output._isNew;
+
+      for (const relationKey of Object.keys(relationPopulators || {})) {
+        const relationValue = output[relationKey];
+        if (relationValue && typeof relationValue === 'object') {
+          output[relationKey] = relationValue._id || relationValue.id || relationValue;
+        }
+      }
+
       return output;
     }
 

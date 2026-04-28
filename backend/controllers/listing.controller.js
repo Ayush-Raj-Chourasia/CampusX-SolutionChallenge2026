@@ -47,9 +47,9 @@ const getListings = async (req, res) => {
       .sort({ createdAt: -1 })
       .limit(100);
 
-    // Filter to only show listings from same college
+    // Filter to only show listings from same college (skip listings with missing seller)
     const collegeListings = listings.filter(listing => 
-      listing.seller.college === userCollege
+      listing.seller && listing.seller.college === userCollege
     );
 
     // Format response
@@ -63,13 +63,13 @@ const getListings = async (req, res) => {
       category: listing.category,
       image: listing.images && listing.images.length > 0 ? listing.images[0] : '📦',
       images: listing.images || [],
-      seller: listing.seller.name,
-      sellerId: listing.seller._id,
-      college: listing.seller.college,
-      verified: listing.seller.verified,
-      trustScore: listing.seller.trustScore,
+      seller: listing.seller ? listing.seller.name : 'Unknown',
+      sellerId: listing.seller ? listing.seller._id : null,
+      college: listing.seller ? listing.seller.college : 'Unknown',
+      verified: listing.seller ? listing.seller.verified : false,
+      trustScore: listing.seller ? listing.seller.trustScore : 0,
       escrow: true,
-      wishlist: listing.wishlists.includes(req.user.id),
+      wishlist: Array.isArray(listing.wishlists) && listing.wishlists.includes(req.user.id),
       status: listing.status,
       views: listing.views || 0,
       createdAt: listing.createdAt,
@@ -108,8 +108,8 @@ const getListingById = async (req, res) => {
       });
     }
 
-    // Check if listing is from same college
-    if (listing.seller.college !== user.college) {
+    // Check if listing is from same college (and seller exists)
+    if (!listing.seller || listing.seller.college !== user.college) {
       return res.status(403).json({
         success: false,
         message: 'You can only view listings from your college'
@@ -130,13 +130,13 @@ const getListingById = async (req, res) => {
       category: listing.category,
       image: listing.images && listing.images.length > 0 ? listing.images[0] : '📦',
       images: listing.images || [],
-      seller: listing.seller.name,
-      sellerId: listing.seller._id,
-      college: listing.seller.college,
-      verified: listing.seller.verified,
-      trustScore: listing.seller.trustScore,
+      seller: listing.seller ? listing.seller.name : 'Unknown',
+      sellerId: listing.seller ? listing.seller._id : (listing.seller || listing.sellerId || null),
+      college: listing.seller ? listing.seller.college : 'Unknown',
+      verified: listing.seller ? listing.seller.verified : false,
+      trustScore: listing.seller ? listing.seller.trustScore : 0,
       escrow: true,
-      wishlist: listing.wishlists.includes(req.user.id),
+      wishlist: Array.isArray(listing.wishlists) && listing.wishlists.includes(req.user.id),
       status: listing.status,
       views: listing.views,
       createdAt: listing.createdAt,
@@ -230,11 +230,11 @@ const createListing = async (req, res) => {
       category: listing.category,
       image: listing.images && listing.images.length > 0 ? listing.images[0] : '📦',
       images: listing.images,
-      seller: listing.seller.name,
-      sellerId: listing.seller._id,
-      college: listing.seller.college,
-      verified: listing.seller.verified,
-      trustScore: listing.seller.trustScore,
+      seller: listing.seller ? listing.seller.name : (req.user && req.user.name) || 'Unknown',
+      sellerId: listing.seller ? listing.seller._id : (req.user && req.user.id) || listing._id,
+      college: listing.seller ? listing.seller.college : (req.user && req.user.college) || 'Unknown',
+      verified: listing.seller ? listing.seller.verified : false,
+      trustScore: listing.seller ? listing.seller.trustScore : 0,
       escrow: true,
       wishlist: false,
       status: listing.status,
