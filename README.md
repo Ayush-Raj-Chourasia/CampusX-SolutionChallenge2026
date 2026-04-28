@@ -39,7 +39,7 @@
 - Firestore adapter (Mongoose-like shim) used in backend models
 - **JWT** - Authentication
 - **Socket.io** - Real-time chat
-- **Google Cloud Storage** - Image storage (replaced Cloudinary)
+- **Google Cloud Storage** - Image storage
 - **Razorpay** - Payment gateway
 
 ### AI Services
@@ -130,7 +130,7 @@ campusX/
 │
 ├── backend/
 │   ├── server.js          # Entry point
-│   ├── config/            # DB, Cloudinary config
+│   ├── config/            # DB
 │   ├── models/            # MongoDB schemas
 │   │   ├── User.js
 │   │   ├── Listing.js
