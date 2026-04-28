@@ -148,7 +148,7 @@ const Chat = () => {
       if (!token) return; // Need auth to fetch protected listing
 
       try {
-        const res = await fetch(`${API_URL}/listings/${listingId}`, {
+        const res = await fetch(`${API_URL}/api/listings/${listingId}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         const data = await res.json();
@@ -209,7 +209,7 @@ const Chat = () => {
           sellerId = "60d0fe4f5311236168a109ca";
         }
 
-        const res = await fetch(`${API_URL}/chat`, {
+        const res = await fetch(`${API_URL}/api/chat`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -228,7 +228,7 @@ const Chat = () => {
           setChat(data.data);
 
           // Fetch Messages
-          const msgRes = await fetch(`${API_URL}/chat/${data.data._id}/messages`, {
+          const msgRes = await fetch(`${API_URL}/api/chat/${data.data._id}/messages`, {
             headers: { Authorization: `Bearer ${token}` }
           });
           const msgData = await msgRes.json();
@@ -308,7 +308,7 @@ const Chat = () => {
       const token = sessionStorage.getItem('authToken');
       console.log("Sending message to API...", { chatId: chat._id, message: input });
 
-      const res = await fetch(`${API_URL}/chat/message`, {
+      const res = await fetch(`${API_URL}/api/chat/message`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -65,5 +65,5 @@ export function getBackendBaseUrl() {
 }
 
 export function getApiUrl() {
-  return `${getBackendBaseUrl()}/api`;
+  return getBackendBaseUrl();
 }
