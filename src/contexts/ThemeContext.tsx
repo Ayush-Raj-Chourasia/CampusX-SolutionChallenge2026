@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { getApiUrl } from "@/lib/api";
 
 export type Theme = "light" | "dark";
 
@@ -27,7 +28,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       if (token) {
         try {
           // Fetch current user profile to get saved theme
-          const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+          const API_URL = getApiUrl();
           const response = await fetch(`${API_URL}/api/auth/profile`, {
             headers: {
               'Authorization': `Bearer ${token}`
@@ -64,7 +65,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       const token = sessionStorage.getItem('authToken');
       if (token) {
         try {
-          const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+          const API_URL = getApiUrl();
           await fetch(`${API_URL}/api/auth/profile`, {
             method: 'PUT',
             headers: {

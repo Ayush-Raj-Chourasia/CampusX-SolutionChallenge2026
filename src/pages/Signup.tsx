@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { getApiUrl } from "@/lib/api";
 import { 
   Lock, 
   ArrowRight, 
@@ -141,7 +142,7 @@ const Signup = () => {
     
     try {
       // Call real backend API to create account and send OTP
-      const API_URL = import.meta.env.VITE_API_URL || 'https://campusx-rg-axgefjeqgae2bpfs.eastasia-01.azurewebsites.net';
+      const API_URL = getApiUrl();
       
       const response = await fetch(`${API_URL}/api/auth/register`, {
         method: 'POST',

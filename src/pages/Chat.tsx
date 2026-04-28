@@ -38,9 +38,10 @@ import {
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { socket } from "@/lib/socket";
+import { getApiUrl } from "@/lib/api";
 
 const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1MB
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API_URL = getApiUrl();
 
 interface Message {
   _id: string;
@@ -102,7 +103,7 @@ const Chat = () => {
   const [feedbackGiven, setFeedbackGiven] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const callTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const callTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Fallback product/seller info if listing store is empty (e.g. refresh)
   //Ideally we should fetch listing details from API if not in store
@@ -570,6 +571,8 @@ const Chat = () => {
           accept="image/*"
           onChange={handleImageUpload}
           className="hidden"
+          aria-label="Upload chat attachment"
+          title="Upload chat attachment"
         />
         <div className="flex items-center gap-2">
           <Button variant="ghost" size="icon" onClick={() => fileInputRef.current?.click()}>

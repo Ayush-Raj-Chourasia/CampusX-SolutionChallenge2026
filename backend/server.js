@@ -19,10 +19,9 @@ const { Server } = require("socket.io");
 const io = new Server(server, {
   cors: {
     origin: function (origin, callback) {
-      // Allow all localhost, vercel.app, and run.app origins
+        // Allow localhost and Cloud Run origins
       if (!origin || 
           origin.includes('localhost') || 
-          origin.includes('.vercel.app') || 
           origin.includes('.run.app')) {
         callback(null, true);
       } else {
@@ -69,16 +68,12 @@ console.log('==========================================');
 // Middleware
 app.use(helmet()); // Security headers
 
-// CORS Configuration - Allow Cloud Run, Vercel deployments, and local development
+// CORS Configuration - Allow Cloud Run and local development
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:8080',
   'http://localhost:8081',
-  'http://localhost:3000',
-  'https://campus-x-tan.vercel.app',
-  'https://campusx-nu.vercel.app',
-  'https://iq-zero-campusx.vercel.app',
-  'https://backend-lake-nine-57.vercel.app'
+  'http://localhost:3000'
 ];
 
 app.use(cors({
@@ -86,10 +81,9 @@ app.use(cors({
     // Allow requests with no origin (mobile apps, Postman, etc.)
     if (!origin) return callback(null, true);
 
-    // Check if origin is in allowed list, matches Cloud Run pattern, Vercel preview pattern, or localhost
+    // Check if origin is in allowed list, matches Cloud Run pattern, or localhost
     if (allowedOrigins.includes(origin) ||
       origin.includes('.run.app') ||
-      origin.includes('.vercel.app') ||
       origin.includes('localhost')) {
       callback(null, true);
     } else {

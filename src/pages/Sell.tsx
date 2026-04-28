@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { ImageCropper } from "@/components/ImageCropper";
+import { getApiUrl } from "@/lib/api";
 import { 
   ArrowLeft,
   Camera,
@@ -148,7 +149,7 @@ const Sell = () => {
       }
 
       // Call real backend API
-      const API_URL = import.meta.env.VITE_API_URL || 'https://campusx-rg-axgefjeqgae2bpfs.eastasia-01.azurewebsites.net';
+      const API_URL = getApiUrl();
       
       const response = await fetch(`${API_URL}/api/listings`, {
         method: 'POST',

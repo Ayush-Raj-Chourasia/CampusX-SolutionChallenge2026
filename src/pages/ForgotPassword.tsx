@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Mail, ArrowRight, ArrowLeft, Shield, Lock } from "lucide-react";
 import { toast } from "sonner";
+import { getApiUrl } from "@/lib/api";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ const ForgotPassword = () => {
     setIsLoading(true);
 
     try {
-      const API_URL = import.meta.env.VITE_API_URL || 'https://campusx-rg-axgefjeqgae2bpfs.eastasia-01.azurewebsites.net';
+      const API_URL = getApiUrl();
       
       const response = await fetch(`${API_URL}/api/auth/forgot-password`, {
         method: 'POST',
@@ -72,7 +73,7 @@ const ForgotPassword = () => {
     setIsLoading(true);
 
     try {
-      const API_URL = import.meta.env.VITE_API_URL || 'https://campusx-rg-axgefjeqgae2bpfs.eastasia-01.azurewebsites.net';
+      const API_URL = getApiUrl();
       
       const response = await fetch(`${API_URL}/api/auth/reset-password`, {
         method: 'POST',

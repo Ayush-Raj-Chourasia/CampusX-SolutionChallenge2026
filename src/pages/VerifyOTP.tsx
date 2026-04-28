@@ -5,6 +5,7 @@ import { Logo } from "@/components/icons/Logo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { getApiUrl } from "@/lib/api";
 import { 
   Phone,
   ArrowRight,
@@ -139,7 +140,7 @@ const VerifyOTP = () => {
 
     try {
       // Call real backend API to verify OTP
-      const API_URL = import.meta.env.VITE_API_URL || 'https://campusx-rg-axgefjeqgae2bpfs.eastasia-01.azurewebsites.net';
+      const API_URL = getApiUrl();
       
       const response = await fetch(`${API_URL}/api/auth/verify-otp`, {
         method: 'POST',
@@ -202,7 +203,7 @@ const VerifyOTP = () => {
 
     try {
       // Call real backend API to resend OTP (generates NEW OTP, invalidates old one)
-      const API_URL = import.meta.env.VITE_API_URL || 'https://campusx-rg-axgefjeqgae2bpfs.eastasia-01.azurewebsites.net';
+      const API_URL = getApiUrl();
       
       const response = await fetch(`${API_URL}/api/auth/send-otp`, {
         method: 'POST',

@@ -47,6 +47,7 @@ import {
 } from "@/components/ui/dialog";
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
+import { getApiUrl } from "@/lib/api";
 import { toast } from "sonner";
 
 const categories = [
@@ -91,7 +92,7 @@ const Marketplace = () => {
           return;
         }
 
-        const API_URL = import.meta.env.VITE_API_URL || 'https://campusx-rg-axgefjeqgae2bpfs.eastasia-01.azurewebsites.net';
+        const API_URL = getApiUrl();
 
         const response = await fetch(`${API_URL}/api/listings`, {
           headers: {
@@ -179,7 +180,7 @@ const Marketplace = () => {
         return;
       }
 
-      const API_URL = import.meta.env.VITE_API_URL || 'https://campusx-rg-axgefjeqgae2bpfs.eastasia-01.azurewebsites.net';
+      const API_URL = getApiUrl();
 
       const response = await fetch(`${API_URL}/api/listings/${id}/wishlist`, {
         method: 'POST',

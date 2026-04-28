@@ -35,4 +35,3 @@ dist-ssr
 coverage
 *.md
 !README.md
-.vercel
