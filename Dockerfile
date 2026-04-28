@@ -27,10 +27,10 @@ COPY --from=builder /app/dist /app/dist
 COPY entrypoint.sh /app/entrypoint.sh
 RUN chmod +x /app/entrypoint.sh
 
-# Health check
+# Health check - use PORT env var (Cloud Run sets it to 8080, default is 3000)
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:3000', (r) => {if (r.statusCode !== 200) throw new Error(r.statusCode)})"
+  CMD node -e "const port = process.env.PORT || 3000; require('http').get('http://localhost:' + port, (r) => {if (r.statusCode !== 200) throw new Error(r.statusCode)})"
 
-EXPOSE 3000
+EXPOSE 8080
 
 ENTRYPOINT ["/app/entrypoint.sh"]
