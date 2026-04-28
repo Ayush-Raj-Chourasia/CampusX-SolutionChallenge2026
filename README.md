@@ -35,11 +35,11 @@
 
 ### Backend
 - **Node.js** + **Express.js** - REST API server
-- **MongoDB** - Database
-- **Mongoose** - ODM
+- **Google Cloud Firestore** - Database (replaced MongoDB)
+- Firestore adapter (Mongoose-like shim) used in backend models
 - **JWT** - Authentication
 - **Socket.io** - Real-time chat
-- **Google Cloud Storage** - Image storage
+- **Google Cloud Storage** - Image storage (replaced Cloudinary)
 - **Razorpay** - Payment gateway
 
 ### AI Services
@@ -53,9 +53,8 @@
 
 ### Prerequisites
 - Node.js 18+ and npm
-- MongoDB (local or Atlas)
-- Google Cloud / Vertex AI access or API key
-- Cloudinary account
+- Google Cloud account with Firestore & Cloud Storage access (or local ADC configured)
+- Vertex AI / Gemini access (optional, for AI features)
 - Razorpay test account
 
 ### Frontend Setup
@@ -92,8 +91,9 @@ npm install
 # Create environment file
 cp .env.example .env
 
-# Edit .env with your credentials
-# (MongoDB URI, JWT secret, API keys, etc.)
+# Edit `.env` with your credentials (see below). For local development,
+# configure Google Application Default Credentials (ADC) or provide a
+# service account key via `GOOGLE_APPLICATION_CREDENTIALS` environment variable.
 
 # Start server
 npm run dev
@@ -172,15 +172,14 @@ VITE_API_URL=http://localhost:5000
 PORT=5000
 NODE_ENV=development
 
-# Database
-MONGODB_URI=mongodb://localhost:27017/campusx
+# Firestore / Google Cloud
+# If running locally, set GOOGLE_APPLICATION_CREDENTIALS to your
+# service account JSON key file path or configure ADC via `gcloud auth application-default login`.
+GCS_BUCKET_NAME=your-gcs-bucket-name
 
 # Authentication
 JWT_SECRET=your-super-secret-jwt-key-change-this
 JWT_EXPIRE=30d
-
-# Google Cloud Storage (Image Storage)
-GCS_BUCKET_NAME=your-gcs-bucket-name
 
 # Email (Nodemailer)
 EMAIL_HOST=smtp.gmail.com
@@ -346,7 +345,6 @@ This is a competition prototype. Team members:
 2. Commit changes: `git commit -m 'Add feature'`
 3. Push: `git push origin feature/your-feature`
 4. Create Pull Request
-5. Request review from Team Leader (Keshav)
 
 ---
 

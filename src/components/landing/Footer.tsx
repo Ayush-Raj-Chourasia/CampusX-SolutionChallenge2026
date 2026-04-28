@@ -108,13 +108,13 @@ export const Footer = () => {
         {/* Bottom Bar */}
         <div className="text-center space-y-2 pt-8 border-t border-border">
           <p className="text-sm text-muted-foreground">
-            © 2025 CampusX. All rights reserved.
+            © 2026 CampusX. All rights reserved.
           </p>
           <p className="text-sm text-muted-foreground">
-            Made with care by Idotics
+            Made with care by IQ Zero
           </p>
           <p className="text-sm text-muted-foreground">
-            Developed by Idotics
+            Developed by IQ Zero
           </p>
         </div>
       </div>

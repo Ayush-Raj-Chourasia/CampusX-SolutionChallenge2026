@@ -264,10 +264,6 @@ Content-Type: application/json
 }
 ```
 
----
-
-## Integration with Tribhuwan's AI Services
-
 ```javascript
 // Example: Using AI in your controller
 const { suggestPrice } = require('../services/ai/priceIntelligence');
@@ -345,13 +341,3 @@ JWT_SECRET=your-super-secret-key-at-least-32-characters-long
 
 ---
 
-## Resources
-
-- Express.js Docs: https://expressjs.com/
-- MongoDB Docs: https://docs.mongodb.com/
-- Mongoose Guide: https://mongoosejs.com/docs/guide.html
-- JWT: https://jwt.io/introduction
-
----
-
-**Need Help?** Message team WhatsApp or call Keshav!
