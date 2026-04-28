@@ -8,4 +8,5 @@ coverage/
 .vscode/
 .idea/
 .cloudrun.env
-.vercel
+.firebase/
+firebase-debug.log*

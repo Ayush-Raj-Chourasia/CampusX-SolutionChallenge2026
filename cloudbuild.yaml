@@ -9,27 +9,11 @@ steps:
       - 'backend/Dockerfile'
       - 'backend/'
 
-  # Build frontend Docker image from root Dockerfile
-  - name: 'gcr.io/cloud-builders/docker'
-    args:
-      - 'build'
-      - '-t'
-      - 'asia-south1-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/campusx-solutionchallenge2026/campusx-frontend:$COMMIT_SHA'
-      - '-f'
-      - 'Dockerfile'
-      - '.'
-
   # Push backend image
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'push'
       - 'asia-south1-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/campusx-solutionchallenge2026/campusx-backend:$COMMIT_SHA'
-
-  # Push frontend image
-  - name: 'gcr.io/cloud-builders/docker'
-    args:
-      - 'push'
-      - 'asia-south1-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/campusx-solutionchallenge2026/campusx-frontend:$COMMIT_SHA'
 
   # Deploy backend to Cloud Run
   - name: 'gcr.io/cloud-builders/gke-deploy'
@@ -47,47 +31,17 @@ steps:
       - --quiet
     entrypoint: gcloud
 
-  # Deploy frontend to Cloud Run with backend API URL as environment variable
-  - name: 'gcr.io/cloud-builders/gke-deploy'
-    env:
-      - 'CLOUDSDK_COMPUTE_REGION=asia-south1'
-      - 'PROJECT_ID=$PROJECT_ID'
+  # Deploy frontend to Firebase Hosting
+  - name: 'node:18-bullseye'
     entrypoint: bash
     args:
       - -c
       - |
-        # Get the deployed backend service URL
-        BACKEND_URL=$$(gcloud run services describe campusx-backend --platform=managed --region=asia-south1 --project=$PROJECT_ID --format='value(status.url)' 2>/dev/null || echo "")
-        
-        if [ -z "$$BACKEND_URL" ]; then
-          echo "Warning: Could not retrieve backend service URL, using default"
-          BACKEND_URL="https://campusx-backend-asia-south1.run.app"
-        fi
-        
-        echo "Deploying frontend with backend URL: $$BACKEND_URL"
-        
-        # Deploy frontend with backend URL as environment variable
-        gcloud run services update campusx-frontend \
-          --platform=managed \
-          --image=asia-south1-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/campusx-solutionchallenge2026/campusx-frontend:$COMMIT_SHA \
-          --labels=managed-by=gcp-cloud-build-deploy-cloud-run,commit-sha=$COMMIT_SHA,gcb-build-id=$BUILD_ID \
-          --set-env-vars="VITE_API_URL=$$BACKEND_URL" \
-          --region=asia-south1 \
-          --quiet \
-          --project=$PROJECT_ID
-        
-        # Make frontend publicly accessible by binding Cloud Run Invoker role to allUsers
-        gcloud run services add-iam-policy-binding campusx-frontend \
-          --member=allUsers \
-          --role=roles/run.invoker \
-          --platform=managed \
-          --region=asia-south1 \
-          --quiet \
-          --project=$PROJECT_ID
+        npm install -g firebase-tools
+        firebase deploy --only hosting:campusx-frontend --project=$PROJECT_ID --non-interactive
 
 images:
   - 'asia-south1-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/campusx-solutionchallenge2026/campusx-backend:$COMMIT_SHA'
-  - 'asia-south1-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/campusx-solutionchallenge2026/campusx-frontend:$COMMIT_SHA'
 
 options:
   logging: CLOUD_LOGGING_ONLY

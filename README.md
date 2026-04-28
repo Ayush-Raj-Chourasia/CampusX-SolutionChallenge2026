@@ -271,23 +271,34 @@ npm run test:e2e
 
 ## 🌐 Deployment
 
-Both frontend and backend are deployed to **Google Cloud Run** via Cloud Build CI/CD.
+The backend is deployed to **Google Cloud Run** and the frontend is deployed to **Firebase Hosting**.
 
-### Automated Deployment (Cloud Build)
+### Automated Deployment
 
 Push to `main` branch and Cloud Build automatically:
-1. Builds backend from `backend/Dockerfile`
-2. Builds frontend from root `Dockerfile` (serves via Node.js with `serve`)
-3. Pushes both images to Artifact Registry (asia-south1)
-4. Deploys both services to Cloud Run (asia-south1 region)
+1. Builds the backend from `backend/Dockerfile`
+2. Pushes the backend image to Artifact Registry
+3. Deploys the backend to Cloud Run in `asia-south1`
+4. Builds the frontend with the production API URL
+5. Deploys the frontend to Firebase Hosting site `campusx-frontend`
 
-**Services:**
-- **Backend API**: `campusx-backend` Cloud Run service → `VITE_API_URL` env var
-- **Frontend Web**: `campusx-frontend` Cloud Run service → publicly accessible
+**Live URLs:**
+- **Backend API**: `https://campusx-backend-j3sgtmeamq-el.a.run.app`
+- **Frontend Web**: `https://campusx-frontend.web.app`
 
 **Build config:** [cloudbuild.yaml](cloudbuild.yaml) — defines all steps.
 
-### Manual Cloud Run Deployment (if needed)
+### Manual Frontend Deployment
+
+```bash
+# Build the frontend
+npm run build
+
+# Deploy to Firebase Hosting
+firebase deploy --only hosting:campusx-frontend --project innate-benefit-444822-h1
+```
+
+### Manual Backend Deployment
 
 ```bash
 # Build backend
@@ -301,20 +312,6 @@ gcloud run deploy campusx-backend \
   --image asia-south1-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/campusx-solutionchallenge2026/campusx-backend:latest \
   --platform managed \
   --region asia-south1 \
-  --project=$PROJECT_ID
-
-# Build frontend
-gcloud builds submit --tag asia-south1-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/campusx-solutionchallenge2026/campusx-frontend:latest \
-  --project=$PROJECT_ID \
-  -f Dockerfile \
-  .
-
-# Deploy frontend
-gcloud run deploy campusx-frontend \
-  --image asia-south1-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/campusx-solutionchallenge2026/campusx-frontend:latest \
-  --platform managed \
-  --region asia-south1 \
-  --allow-unauthenticated \
   --project=$PROJECT_ID
 ```
 

@@ -19,10 +19,12 @@ const { Server } = require("socket.io");
 const io = new Server(server, {
   cors: {
     origin: function (origin, callback) {
-        // Allow localhost and Cloud Run origins
+        // Allow localhost, Cloud Run, and Firebase Hosting origins
       if (!origin || 
           origin.includes('localhost') || 
-          origin.includes('.run.app')) {
+            origin.includes('.run.app') ||
+            origin.includes('.web.app') ||
+            origin.includes('.firebaseapp.com')) {
         callback(null, true);
       } else {
         callback(new Error('Not allowed by CORS'));
@@ -68,7 +70,7 @@ console.log('==========================================');
 // Middleware
 app.use(helmet()); // Security headers
 
-// CORS Configuration - Allow Cloud Run and local development
+// CORS Configuration - Allow Cloud Run, Firebase Hosting, and local development
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:8080',
@@ -81,9 +83,11 @@ app.use(cors({
     // Allow requests with no origin (mobile apps, Postman, etc.)
     if (!origin) return callback(null, true);
 
-    // Check if origin is in allowed list, matches Cloud Run pattern, or localhost
+    // Check if origin is in allowed list, matches Cloud Run/Firebase Hosting pattern, or localhost
     if (allowedOrigins.includes(origin) ||
       origin.includes('.run.app') ||
+      origin.includes('.web.app') ||
+      origin.includes('.firebaseapp.com') ||
       origin.includes('localhost')) {
       callback(null, true);
     } else {
