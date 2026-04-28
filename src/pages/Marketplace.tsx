@@ -631,7 +631,7 @@ const Marketplace = () => {
               >
                 {/* Image */}
                 <div className="relative aspect-square bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center overflow-hidden">
-                  {typeof listing.image === 'string' && listing.image.startsWith('data:image') ? (
+                  {typeof listing.image === 'string' && (listing.image.startsWith('http') || listing.image.startsWith('data:image')) ? (
                     <img src={listing.image} alt={listing.title} className="w-full h-full object-cover" />
                   ) : (
                     <span className="text-7xl">{listing.image}</span>
