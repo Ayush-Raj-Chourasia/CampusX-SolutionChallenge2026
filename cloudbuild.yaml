@@ -73,7 +73,15 @@ steps:
           --labels=managed-by=gcp-cloud-build-deploy-cloud-run,commit-sha=$COMMIT_SHA,gcb-build-id=$BUILD_ID \
           --set-env-vars="VITE_API_URL=$$BACKEND_URL" \
           --region=asia-south1 \
-          --no-require-authentication \
+          --quiet \
+          --project=$PROJECT_ID
+        
+        # Make frontend publicly accessible by binding Cloud Run Invoker role to allUsers
+        gcloud run services add-iam-policy-binding campusx-frontend \
+          --member=allUsers \
+          --role=roles/run.invoker \
+          --platform=managed \
+          --region=asia-south1 \
           --quiet \
           --project=$PROJECT_ID
 
