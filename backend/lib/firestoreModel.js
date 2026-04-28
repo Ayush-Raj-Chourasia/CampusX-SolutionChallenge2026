@@ -97,6 +97,10 @@ class FirestoreDocument {
     Object.assign(this, data);
   }
 
+  get id() {
+    return this._id;
+  }
+
   async save() {
     await this._model._saveDocument(this);
     return this;
