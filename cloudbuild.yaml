@@ -57,21 +57,21 @@ steps:
       - -c
       - |
         # Get the deployed backend service URL
-        BACKEND_URL=$(gcloud run services describe campusx-backend --platform=managed --region=asia-south1 --project=$PROJECT_ID --format='value(status.url)' 2>/dev/null || echo "")
+        BACKEND_URL=$$(gcloud run services describe campusx-backend --platform=managed --region=asia-south1 --project=$PROJECT_ID --format='value(status.url)' 2>/dev/null || echo "")
         
-        if [ -z "$BACKEND_URL" ]; then
+        if [ -z "$$BACKEND_URL" ]; then
           echo "Warning: Could not retrieve backend service URL, using default"
           BACKEND_URL="https://campusx-backend-asia-south1.run.app"
         fi
         
-        echo "Deploying frontend with backend URL: $BACKEND_URL"
+        echo "Deploying frontend with backend URL: $$BACKEND_URL"
         
         # Deploy frontend with backend URL as environment variable
         gcloud run services update campusx-frontend \
           --platform=managed \
           --image=asia-south1-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/campusx-solutionchallenge2026/campusx-frontend:$COMMIT_SHA \
           --labels=managed-by=gcp-cloud-build-deploy-cloud-run,commit-sha=$COMMIT_SHA,gcb-build-id=$BUILD_ID \
-          --set-env-vars="VITE_API_URL=$BACKEND_URL" \
+          --set-env-vars="VITE_API_URL=$$BACKEND_URL" \
           --region=asia-south1 \
           --no-require-authentication \
           --quiet \
