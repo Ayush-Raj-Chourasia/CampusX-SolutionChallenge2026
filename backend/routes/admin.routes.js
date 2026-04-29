@@ -123,4 +123,25 @@ router.get('/users/email/:email', async (req, res) => {
   }
 });
 
+// @route   PUT /api/admin/users/verify-email/:email
+// @desc    Force-verify a user by email (for test/demo setup)
+// @access  Public (should add auth middleware in production)
+router.put('/users/verify-email/:email', async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.params.email.toLowerCase() });
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+    const docId = user._id || user.id;
+    const { db } = require('../config/firestore');
+    await db.collection('users').doc(docId).update({
+      verified: true,
+      trustScore: 100,
+    });
+    res.json({ success: true, message: `User ${req.params.email} verified`, id: docId });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Error verifying user', error: error.message });
+  }
+});
+
 module.exports = router;

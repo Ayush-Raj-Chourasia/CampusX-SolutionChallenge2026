@@ -279,12 +279,13 @@ Push to `main` branch and Cloud Build automatically:
 1. Builds the backend from `backend/Dockerfile`
 2. Pushes the backend image to Artifact Registry
 3. Deploys the backend to Cloud Run in `asia-south1`
-4. Builds the frontend with the production API URL
-5. Deploys the frontend to Firebase Hosting site `campusx`
+
+Frontend is deployed separately to Firebase Hosting.
 
 **Live URLs:**
-- **Backend API**: `https://campusx-backend-j3sgtmeamq-el.a.run.app`
 - **Frontend Web**: `https://campusx.web.app`
+- **Backend API**: `https://campusx-backend-874168118593.asia-south1.run.app`
+- **API Health Check**: `https://campusx-backend-874168118593.asia-south1.run.app/api/health`
 
 **Build config:** [cloudbuild.yaml](cloudbuild.yaml) — defines all steps.
 
@@ -321,16 +322,26 @@ Replace `$PROJECT_ID` with `innate-benefit-444822-h1`.
 
 ## 📱 Demo Credentials
 
-For testing the prototype:
+For testing the prototype (all passwords are `Test1234!`):
 
-```
-Email: demo@iitd.ac.in
-Password: Demo@123
+| Role | Email | College | Password |
+|------|-------|---------|----------|
+| 🛒 Buyer | `tester@campusx.test` | CampusX Test College | `Test1234!` |
+| 🏪 Seller | `test@soa.ac.in` | SOA University | `Test1234!` |
+| 🎓 SOA Student | `testuser@soa.ac.in` | SOA University | `Test1234!` |
+| 🎓 KIIT Student | `testuser@kiit.ac.in` | KIIT University | `Test1234!` |
+| 🔧 Admin | `admin@campusx.com` | CampusX HQ | `Test1234!` |
 
-Admin Access:
-Email: admin@campusx.com
-Password: Admin@123
-```
+### Admin Dashboard
+
+Access the admin panel at: [`https://campusx.web.app/admin`](https://campusx.web.app/admin)
+
+The admin dashboard includes:
+- **Overview** — Platform stats (Total Users, Active Listings, Transactions, Fraud Blocked)
+- **Verifications** — Pending college ID verification requests with Approve/Reject actions
+- **Fraud Detection** — AI-powered fraud alerts with risk levels (High/Medium/Low)
+- **User Management** — Search, view, and manage registered users
+- **Recent Transactions** — Escrow transaction history with status tracking
 
 ---
 
